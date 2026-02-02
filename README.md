@@ -1,6 +1,5 @@
-# Chatbot project
+# Chatbot project - Simple bot which can
 
-Simple bot which can
+### Flip a coin.
 
-> flip a coin
-> roll a dice
+### Roll a dice.
