@@ -1,12 +1,10 @@
+import dayjs from 'dayjs';
 import { useState } from 'react'
 import { Chatbot } from 'supersimpledev';
 import LoadingImage from '../assets/loading-spinner.gif';
 import '../styles/ChatInput.css';
 
-export function ChatInput(props)
-{
-  const {chatMessages, setChatMessages} = props;      
-
+export function ChatInput({ chatMessages, setChatMessages }) {
   const [inputText, setInputText] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
@@ -15,10 +13,10 @@ export function ChatInput(props)
     setInputText(event.target.value);
   }
 
-  async function sendMessage()
-  {
+    async function sendMessage() 
+    {
 
-    if (isLoading || inputText === '') {
+      if (isLoading || inputText === '') {
       return;
     }
     setIsLoading(true);
@@ -27,13 +25,15 @@ export function ChatInput(props)
 
     const newChatMessages = [
         ...chatMessages, // creates a copy of existing messages
-        {
-          message: inputText, 
-          sender: "user", 
-          id: crypto.randomUUID()
-        }
-      ]
-      setChatMessages([
+      {
+        message: inputText,
+        sender: "user",
+        id: crypto.randomUUID(),
+        time: dayjs().valueOf()
+      }
+    ];
+
+    setChatMessages([
       ...newChatMessages,
       // This creates a temporary Loading... message.
       // Because we don't save this message in newChatMessages,
@@ -44,24 +44,24 @@ export function ChatInput(props)
         id: crypto.randomUUID()
       }
     ]);
-    
+
       
 
       //Get bot response
       //const response = Chatbot.getResponse(inputText);
       const response = await Chatbot.getResponseAsync(inputText);
 
-      setChatMessages([
+    setChatMessages([
         ...newChatMessages, // creates a copy of existing messages
-        {
-          message: response, 
-          sender: "robot", 
-          id: crypto.randomUUID()
-        }
-      ]);
+      {
+        message: response,
+        sender: "robot",
+        id: crypto.randomUUID(),
+        time: dayjs().valueOf()
+      }
+    ]);
 
-      setIsLoading(false);
-    
+    setIsLoading(false);    
   }
 
   
@@ -73,7 +73,7 @@ export function ChatInput(props)
 
   return (
     <div className="chat-input-container">
-      <input 
+      <input
         name="chatInputText" 
         placeholder="Send a message to chatbot" 
         size="30"
@@ -83,7 +83,7 @@ export function ChatInput(props)
       </input>
       <button onClick={sendMessage} className="send-button">Send</button>
       
-      <button onClick={clear} className="send-button">Clear Chat</button>
+      <button onClick={clear} className="send-button">Clear</button>
     </div>
   );
 }
